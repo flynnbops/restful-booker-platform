@@ -1,13 +1,6 @@
-FROM openjdk:18-slim
-
-ADD . /usr/local/report
-
+FROM maven:3.8.6-openjdk-18
 WORKDIR /usr/local/report
-
-COPY target ./
-
-ENV roomDomain=rbp-room
-ENV bookingDomain=rbp-booking
+COPY . .
 ENV profile=dev
-
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile target/restful-booker-platform-report-*.jar -D
+RUN mvn clean package -DskipTests
+ENTRYPOINT ["/bin/sh", "-c", "java -jar -Dspring.profiles.active=${profile} target/restful-booker-platform-report-*.jar"]

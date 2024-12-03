@@ -1,13 +1,6 @@
-FROM openjdk:18-slim
-
-ADD . /usr/local/booking
-
+FROM maven:3.8.6-openjdk-18
 WORKDIR /usr/local/booking
-
-COPY target ./
-
-ENV authDomain=rbp-auth
-ENV messageDomain=rbp-message
+COPY . .
 ENV profile=dev
-
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-booking-*.jar -D
+RUN mvn clean package -DskipTests
+ENTRYPOINT ["/bin/sh", "-c", "java -jar -Dspring.profiles.active=${profile} -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-booking-*.jar"]

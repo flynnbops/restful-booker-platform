@@ -1,12 +1,6 @@
-FROM openjdk:18-slim
-
-ADD . /usr/local/message
-
+FROM maven:3.8.6-openjdk-18
 WORKDIR /usr/local/message
-
-COPY target ./
-
-ENV authDomain=rbp-auth
+COPY . .
 ENV profile=dev
-
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile target/restful-booker-platform-message-*.jar -D
+RUN mvn clean package -DskipTests
+ENTRYPOINT ["/bin/sh", "-c", "java -jar -Dspring.profiles.active=${profile} target/restful-booker-platform-message-*.jar"]

@@ -1,12 +1,6 @@
-FROM openjdk:18-slim
-
-ADD . /usr/local/auth
-
+FROM maven:3.8.6-openjdk-18
 WORKDIR /usr/local/auth
-
+COPY . .
 ENV profile=dev
-
-COPY target ./
-
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} restful-booker-platform-auth-*.jar
-
+RUN mvn clean package -DskipTests
+ENTRYPOINT ["/bin/sh", "-c", "java -jar -Dspring.profiles.active=${profile} -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-auth-*.jar"]

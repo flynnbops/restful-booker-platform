@@ -1,12 +1,6 @@
-FROM openjdk:18-slim
-
-ADD . /usr/local/branding
-
+FROM maven:3.8.6-openjdk-18
 WORKDIR /usr/local/branding
-
-COPY target ./
-
+COPY . .
 ENV profile=dev
-ENV authDomain=rbp-auth
-
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-branding-*.jar -D
+RUN mvn clean package -DskipTests
+ENTRYPOINT ["/bin/sh", "-c", "java -jar -Dspring.profiles.active=${profile} -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-branding-*.jar"]

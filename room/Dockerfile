@@ -1,12 +1,6 @@
-FROM openjdk:18-slim
-
-ADD . /usr/local/room
-
+FROM maven:3.8.6-openjdk-18
 WORKDIR /usr/local/room
-
-COPY target ./
-
+COPY . .
 ENV profile=dev
-ENV authDomain=rbp-auth
-
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile target/restful-booker-platform-room-*.jar -D
+RUN mvn clean package -DskipTests
+ENTRYPOINT ["/bin/sh", "-c", "java -jar -Dspring.profiles.active=${profile} target/restful-booker-platform-room-*.jar"]

@@ -9,4 +9,3 @@ ENV profile=dev
 COPY api/target ./
 
 ENTRYPOINT java -jar -Dspring.profiles.active=$profile restful-booker-platform-assets-*.jar
-
